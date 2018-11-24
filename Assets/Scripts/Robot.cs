@@ -18,6 +18,8 @@ public class Robot : MonoBehaviour {
 	public Color trailColor;
 	public GameObject[] trailPrefab;
 
+	public Transform dynamic;
+
 	Direction currentDirection;
 	Direction nextDirection;
 	Direction previousDirection;
@@ -27,9 +29,9 @@ public class Robot : MonoBehaviour {
 	private bool isDead = false;
 
 	void Awake(){
-		SetNextDirection(startingDirection);
 		previousDirection = startingDirection;
 		currentDirection = startingDirection;
+		SetNextDirection(startingDirection);
 		nextPosition = transform.position + moveVector;
 	}
 
@@ -48,18 +50,20 @@ public class Robot : MonoBehaviour {
 		//define next direction
 		ChangeDirection(nextDirection);
 		nextPosition = transform.position + moveVector;
+		
 		//rotate
 		transform.eulerAngles = new Vector3(0, 0, (int)nextDirection * 90);
+		
 		//spawn wall at curr position
 		if(previousWall != null) previousWall.GetComponent<BoxCollider2D>().enabled = true;
 		if(previousDirection == nextDirection){
-			previousWall = Instantiate(trailPrefab[0], transform.position, Quaternion.identity);
+			previousWall = Instantiate(trailPrefab[0], transform.position, Quaternion.identity, dynamic);
 		}
 		else if((int)nextDirection == ((int)previousDirection+1)%4){
-			previousWall = Instantiate(trailPrefab[1], transform.position, Quaternion.identity);
+			previousWall = Instantiate(trailPrefab[1], transform.position, Quaternion.identity, dynamic);
 		}
 		else if((int)nextDirection == ((int)previousDirection+3)%4){
-			previousWall = Instantiate(trailPrefab[2], transform.position, Quaternion.identity);
+			previousWall = Instantiate(trailPrefab[2], transform.position, Quaternion.identity, dynamic);
 		}
 		previousWall.GetComponent<SpriteRenderer>().color = trailColor;
 		previousWall.transform.eulerAngles = new Vector3(0, 0, (int)nextDirection * 90);
@@ -91,7 +95,12 @@ public class Robot : MonoBehaviour {
 
 	public void SetNextDirection(Direction dir){
 		if((int)currentDirection + (int)dir != 2 && (int)currentDirection + (int)dir != 4){
-			nextDirection = dir;
+			nextDirection = dir;	
+		}
+		else{
+			if(dir == Direction.UP || dir == Direction.LEFT){
+				nextDirection = dir;
+			}
 		}
 	}
 
