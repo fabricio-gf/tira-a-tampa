@@ -5,10 +5,10 @@ using UnityEngine;
 public class Robot : MonoBehaviour {
 
 	public enum Direction{
+		RIGHT,
 		UP,
-		DOWN,
 		LEFT,
-		RIGHT
+		DOWN
 	}
 
 
@@ -16,17 +16,20 @@ public class Robot : MonoBehaviour {
 	public Direction startingDirection;
 	[Range(1,10)] public float speed;
 	public Color trailColor;
-	public GameObject trailPrefab;
+	public GameObject[] trailPrefab;
 
-	Direction currentDirection = Direction.UP;
+	Direction currentDirection;
 	Direction nextDirection;
+	Direction previousDirection;
 	private Vector3 moveVector;
 	private Vector3 nextPosition;
 	private GameObject previousWall;
 	private bool isDead = false;
 
-	void Start(){
+	void Awake(){
 		SetNextDirection(startingDirection);
+		previousDirection = startingDirection;
+		currentDirection = startingDirection;
 		nextPosition = transform.position + moveVector;
 	}
 
@@ -42,14 +45,28 @@ public class Robot : MonoBehaviour {
 	}
 
 	private void MoveStep(){
+		//define next direction
 		ChangeDirection(nextDirection);
 		nextPosition = transform.position + moveVector;
+		//rotate
+		transform.eulerAngles = new Vector3(0, 0, (int)nextDirection * 90);
+		//spawn wall at curr position
 		if(previousWall != null) previousWall.GetComponent<BoxCollider2D>().enabled = true;
-		previousWall = Instantiate(trailPrefab, transform.position, Quaternion.identity);
+		if(previousDirection == nextDirection){
+			previousWall = Instantiate(trailPrefab[0], transform.position, Quaternion.identity);
+		}
+		else if((int)nextDirection == ((int)previousDirection+1)%4){
+			previousWall = Instantiate(trailPrefab[1], transform.position, Quaternion.identity);
+		}
+		else if((int)nextDirection == ((int)previousDirection+3)%4){
+			previousWall = Instantiate(trailPrefab[2], transform.position, Quaternion.identity);
+		}
 		previousWall.GetComponent<SpriteRenderer>().color = trailColor;
+		previousWall.transform.eulerAngles = new Vector3(0, 0, (int)nextDirection * 90);
 	}
 	
 	private void ChangeDirection(Direction dir){
+		previousDirection = currentDirection;
 		switch(dir){
 			case Direction.UP:
 				moveVector = new Vector3(0, 1, 0);
@@ -73,7 +90,7 @@ public class Robot : MonoBehaviour {
 	}
 
 	public void SetNextDirection(Direction dir){
-		if((int)currentDirection + (int)dir > 1 && (int)currentDirection + (int)dir < 5){
+		if((int)currentDirection + (int)dir != 2 && (int)currentDirection + (int)dir != 4){
 			nextDirection = dir;
 		}
 	}
