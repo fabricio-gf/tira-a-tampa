@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour {
 
-	public Grid instance;
+	public static Grid instance;
 
 	public int gridSizeX;
 	public int gridSizeY;
@@ -18,7 +18,7 @@ public class Grid : MonoBehaviour {
 		else{
 			Destroy(gameObject);
 		}
-		
+
 		grid = new bool[gridSizeX, gridSizeY];
 	}
 }

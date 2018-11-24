@@ -56,14 +56,14 @@ public class Robot : MonoBehaviour {
 		
 		//spawn wall at curr position
 		if(previousWall != null) previousWall.GetComponent<BoxCollider2D>().enabled = true;
-		if(previousDirection == nextDirection){
-			previousWall = Instantiate(trailPrefab[0], transform.position, Quaternion.identity, dynamic);
-		}
-		else if((int)nextDirection == ((int)previousDirection+1)%4){
+		if((int)nextDirection == ((int)previousDirection+1)%4){
 			previousWall = Instantiate(trailPrefab[1], transform.position, Quaternion.identity, dynamic);
 		}
 		else if((int)nextDirection == ((int)previousDirection+3)%4){
 			previousWall = Instantiate(trailPrefab[2], transform.position, Quaternion.identity, dynamic);
+		}
+		else{
+			previousWall = Instantiate(trailPrefab[0], transform.position, Quaternion.identity, dynamic);
 		}
 		previousWall.GetComponent<SpriteRenderer>().color = trailColor;
 		previousWall.transform.eulerAngles = new Vector3(0, 0, (int)nextDirection * 90);
@@ -98,7 +98,7 @@ public class Robot : MonoBehaviour {
 			nextDirection = dir;	
 		}
 		else{
-			if(dir == Direction.UP || dir == Direction.LEFT){
+			if(currentDirection == Direction.UP || currentDirection == Direction.LEFT){
 				nextDirection = dir;
 			}
 		}
@@ -106,7 +106,12 @@ public class Robot : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D col){
 		if(col.tag == "Wall" || col.tag == "Robot"){
-			isDead = true;
+			ToggleDead();
+			GameManager.instance.EndGame(playerNumber);
 		}
+	}
+
+	public void ToggleDead(){
+		isDead = true;
 	}
 }
