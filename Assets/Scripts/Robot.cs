@@ -11,14 +11,19 @@ public class Robot : MonoBehaviour {
 		RIGHT
 	}
 
+
+	[Range(1,2)] public int playerNumber;
 	public Direction startingDirection;
-	public float speed;
+	[Range(1,10)] public float speed;
 	public Color trailColor;
+	public GameObject trailPrefab;
 
 	Direction currentDirection = Direction.UP;
 	Direction nextDirection;
 	private Vector3 moveVector;
 	private Vector3 nextPosition;
+	private GameObject previousWall;
+	private bool isDead = false;
 
 	void Start(){
 		SetNextDirection(startingDirection);
@@ -26,14 +31,24 @@ public class Robot : MonoBehaviour {
 	}
 
 	// Update is called once per frame
-	void FixedUpdate () {	
+	void FixedUpdate () {
+		if(isDead){
+			return;
+		}
 		if(Vector3.Distance(transform.position, nextPosition) <= 0.01){
-			ChangeDirection(nextDirection);
-			nextPosition = transform.position + moveVector;
+			MoveStep();
 		}
 		transform.position = Vector3.MoveTowards(transform.position, nextPosition, speed*Time.deltaTime);	
 	}
 
+	private void MoveStep(){
+		ChangeDirection(nextDirection);
+		nextPosition = transform.position + moveVector;
+		if(previousWall != null) previousWall.GetComponent<BoxCollider2D>().enabled = true;
+		previousWall = Instantiate(trailPrefab, transform.position, Quaternion.identity);
+		previousWall.GetComponent<SpriteRenderer>().color = trailColor;
+	}
+	
 	private void ChangeDirection(Direction dir){
 		switch(dir){
 			case Direction.UP:
@@ -55,12 +70,17 @@ public class Robot : MonoBehaviour {
 			default:
 			break;
 		}
-	
 	}
 
 	public void SetNextDirection(Direction dir){
 		if((int)currentDirection + (int)dir > 1 && (int)currentDirection + (int)dir < 5){
 			nextDirection = dir;
+		}
+	}
+
+	void OnTriggerEnter2D(Collider2D col){
+		if(col.tag == "Wall" || col.tag == "Robot"){
+			isDead = true;
 		}
 	}
 }
