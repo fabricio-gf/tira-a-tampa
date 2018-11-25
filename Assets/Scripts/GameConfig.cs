@@ -5,7 +5,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Config", menuName = "Config")]
 public class GameConfig : ScriptableObject {
 
-	[Range(1,10)] public int speed;
-	[Range(20,50)] public int populations;
-	[Range(1,3)] public int difficulty;
+	[Range(5,10)] public int speed;
+	[Range(20,100)] public int population;
+	[Range(50,500)] public int generations;
+	[Range(5,10)] public int genes;
+	[Range(0,1)] public float mutation;
 }

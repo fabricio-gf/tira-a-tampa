@@ -7,10 +7,10 @@ public class TrainingManager : MonoBehaviour {
 	private GeneticAlgorithm genAlg1;
 	private GeneticAlgorithm genAlg2;
 
-	public int popSize;
-	public int dnaSize;
-	public int numGen;
-	public bool[,] board;
+	private int popSize;
+	private int dnaSize;
+	private int numGen;
+	private bool[,] board;
 	public int firstPositionX;
 	public int firstPositionY;
 	public int secondPositionX;
@@ -19,11 +19,17 @@ public class TrainingManager : MonoBehaviour {
 	public int boardSizeY;
 	public int losingPenalty;
 	public int winningReward;
-	public float mutationRate;
+	private float mutationRate;
 
-	// Use this for initialization
-	void Start () {
+	public GameConfig config;
+
+	public void StartTraining () {
 		System.Diagnostics.Stopwatch stopwatch = System.Diagnostics.Stopwatch.StartNew();
+
+		popSize = config.population;
+		dnaSize = config.genes;
+		numGen = config.generations;
+		mutationRate = config.mutation;
 		
 		board = new bool[boardSizeX, boardSizeY];
 		for(int i = 0; i < boardSizeX; i++){
@@ -43,32 +49,17 @@ public class TrainingManager : MonoBehaviour {
 		
 		List<int[]> pop1 = genAlg1.RunAlgorithm();
 	
-		// Debug.Log("pop2");
 		List<int[]> pop2 = genAlg2.RunAlgorithm();
 
 		
-		// Debug.Log("GEN 1 ALG :");
-		// for(int i = 0; i < pop1.Count; i++){
-		// 	Debug.Log("ind "+ i);
-		// 	for(int j = 0; j < pop1[i].Length; j++){
-		// 		Debug.Log("gene " + j + " " + pop1[i][j]);
-		// 	}
-		// }
-		
-		// Debug.Log("GEN 2 ALG :");
-		// for(int i = 0; i < pop2.Count; i++){
-		// 	Debug.Log("ind " + i);
-		// 	for(int j = 0; j < pop2[i].Length; j++){
-		// 		Debug.Log("gene " + j + " " + pop2[i][j]);
-		// 	}
-		// }
 
-		//System.Threading.Thread.Sleep(500);
 		stopwatch.Stop();
 		print("Elapsed time: " + stopwatch.ElapsedMilliseconds);
 
 		//agir 5 jogadas
 		
+
+		UnityEngine.SceneManagement.SceneManager.LoadScene("Game");
 	}
 
 }

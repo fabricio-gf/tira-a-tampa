@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ea060893e839cf41880f9ece3342ff8, type: 3}
   m_Name: Config
   m_EditorClassIdentifier: 
-  speed: 5
-  populations: 50
-  difficulty: 2
+  speed: 8
+  population: 50
+  generations: 200
+  genes: 5
+  mutation: 0.5

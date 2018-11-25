@@ -49,11 +49,21 @@ public class GameManager : MonoBehaviour {
 		else{
 			switch(deadPlayer){
 			case 1:
-				endText.text = "TIRA A TAMPA!";
+				if(SceneManager.GetActiveScene().name == "Game"){
+					endText.text = "TIRA A TAMPA!";
+				}
+				else{
+					endText.text = "Player 2 won!";
+				}
 				ai.GetComponent<Robot>().ToggleDead();
 			break;
 			case 2:
-				endText.text = "You won!";
+				if(SceneManager.GetActiveScene().name == "Game"){
+					endText.text = "PARABÉNS FERA!";
+				}
+				else{
+					endText.text = "Player 1 won!";
+				}
 				player.GetComponent<Robot>().ToggleDead();
 			break;
 			default:
@@ -64,7 +74,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void PlayAgain(){
-		SceneManager.LoadScene("Game");
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 	public void BackToMenu(){

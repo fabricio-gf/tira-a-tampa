@@ -31,6 +31,7 @@ public class Robot : MonoBehaviour {
 	void Awake(){
 		previousDirection = startingDirection;
 		currentDirection = startingDirection;
+		nextDirection = startingDirection;
 		SetNextDirection(startingDirection);
 		nextPosition = transform.position + moveVector;
 	}
@@ -97,11 +98,11 @@ public class Robot : MonoBehaviour {
 		if((int)currentDirection + (int)dir != 2 && (int)currentDirection + (int)dir != 4){
 			nextDirection = dir;	
 		}
-		else{
-			if(currentDirection == Direction.UP || currentDirection == Direction.LEFT){
-				nextDirection = dir;
-			}
-		}
+		// else{
+		// 	if((currentDirection == Direction.UP && nextDirection == Direction.UP) || (currentDirection == Direction.LEFT && nextDirection == Direction.LEFT)){
+		// 		nextDirection = dir;
+		// 	}
+		// }
 	}
 
 	void OnTriggerEnter2D(Collider2D col){
