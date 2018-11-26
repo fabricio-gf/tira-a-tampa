@@ -29,7 +29,6 @@ public class Robot : MonoBehaviour {
 	private bool isDead = false;
 	[HideInInspector] public bool canMove = false;
 	public bool isPlayer;
-	public AIController ai;
 
 	void Awake(){
 		previousDirection = startingDirection;

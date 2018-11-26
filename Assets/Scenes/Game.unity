@@ -173,7 +173,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &105914611
 GameObject:
@@ -278,7 +278,7 @@ Transform:
   - {fileID: 188505074}
   - {fileID: 1135815629}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &150331659
 GameObject:
@@ -597,7 +597,7 @@ Transform:
   m_Children:
   - {fileID: 1017632136}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &882811195
 GameObject:
@@ -723,7 +723,6 @@ MonoBehaviour:
   dynamic: {fileID: 1893665854}
   canMove: 0
   isPlayer: 0
-  ai: {fileID: 0}
 --- !u!212 &882811201
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4960,8 +4959,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_Father: {fileID: 1564719247}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1564218793
 MonoBehaviour:
@@ -5005,8 +5004,9 @@ Transform:
   m_Children:
   - {fileID: 2100555447}
   - {fileID: 150331660}
+  - {fileID: 1564218792}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1569206771
 GameObject:
@@ -5170,7 +5170,7 @@ RectTransform:
   m_Children:
   - {fileID: 1326008690}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5401,7 +5401,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1942830507
 GameObject:
@@ -5566,6 +5566,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d87b0c373b668414a922528961ada851, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  quitKey: 27
   restartKey: 32
   config: {fileID: 11400000, guid: 625681d1cefad0f44a8614df07b997cc, type: 2}
   player: {fileID: 642594387}

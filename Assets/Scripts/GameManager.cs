@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
 
 	public static GameManager instance;
 
+	public KeyCode quitKey;
 	public KeyCode restartKey;
 
 	public GameConfig config;
@@ -36,12 +37,15 @@ public class GameManager : MonoBehaviour {
 
 	void Update(){
 		if(gameEnded && Input.GetKeyDown(restartKey)){
-			ai.GetComponent<AIController>().gameOver = true;
 			PlayAgain();
+		}
+		else if(gameEnded && Input.GetKeyDown(quitKey)){
+			BackToMenu();
 		}
 	}
 
 	public void EndGame(int deadPlayer){
+		ai.GetComponent<AIController>().gameOver = true;
 		endWindow.SetActive(true);
 		deadPlayers++;
 		if(deadPlayers > 1){

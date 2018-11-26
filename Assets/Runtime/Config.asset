@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Name: Config
   m_EditorClassIdentifier: 
   speed: 8
-  population: 50
-  generations: 200
-  genes: 5
-  mutation: 0.5
+  population: 100
+  generations: 107
+  genes: 3
+  mutation: 0

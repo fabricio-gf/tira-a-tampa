@@ -32,6 +32,7 @@ public class Menu : MonoBehaviour {
 
 	public void StartGame(){
 		// trainingManager.StartTraining();
+		SceneManager.LoadScene("Game");
 	}
 
 	public void StartMultiplayer(){
@@ -61,5 +62,9 @@ public class Menu : MonoBehaviour {
 	public void ChangeMutation(float mut){
 		config.mutation = (float)System.Math.Round(mut,2);
 		mutationText.text = config.mutation.ToString();
+	}
+
+	public void QuitGame(){
+		Application.Quit();
 	}
 }

@@ -180,15 +180,15 @@ public class GeneticAlgorithm {
 		//if(won(dnaSize, positionX, positionY, boardSizeX, boardSizeY)	
 		// fitness += Math.Abs(myPositionX-enemyPositionX);
 		if(myPositionX >= enemyPositionX) {
-			fitness += (myPositionX - enemyPositionX);
-			} else {
 			fitness -= (myPositionX - enemyPositionX);
+			} else {
+			fitness += (myPositionX - enemyPositionX);
 		}
 		// Debug.Log("fitness= "+ fitness);
 		if(myPositionY >= enemyPositionY) {
-			fitness += (myPositionY - enemyPositionY);
-		} else {
 			fitness -= (myPositionY - enemyPositionY);
+		} else {
+			fitness += (myPositionY - enemyPositionY);
 		}
 		// Debug.Log("fitness= "+ fitness);
 		fitness += GetRandomInteger((int) Math.Floor((boardSizeX + boardSizeY) * random_multiplier));
@@ -211,7 +211,7 @@ public class GeneticAlgorithm {
 		for(int i = 0; i < path_size; i++) {
 			//Debug.Log("path[" + i + "]= " + path[i]);
 			switch(path[i]) {
-				case 1:
+				case 2:
 					if((position_x - 1) < 0 || auxBoard[position_x - 1,position_y] == true) {
 						//Debug.Log("Lostcase1");
 						return true;
@@ -220,7 +220,7 @@ public class GeneticAlgorithm {
 						position_x--;
 					}
 					break;
-				case 0:
+				case 3:
 					if((position_y + 1) >= boardSizeY || auxBoard[position_x,position_y + 1] == true) {
 						// Debug.Log("Lostcase2");
 						return true;
@@ -229,7 +229,7 @@ public class GeneticAlgorithm {
 						position_y++;
 					}
 					break;
-				case 3:
+				case 0:
 					if((position_x + 1) >= boardSizeX || auxBoard[position_x + 1,position_y] == true) {
 						// Debug.Log("Lostcase3");
 						return true;
@@ -238,7 +238,7 @@ public class GeneticAlgorithm {
 						position_x++;
 					}
 					break;
-				case 2:
+				case 1:
 					if((position_y - 1) < 0 || auxBoard[position_x,position_y - 1] == true) {
 						// Debug.Log("Lostcase4");
 						return true;
