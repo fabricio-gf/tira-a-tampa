@@ -157,18 +157,19 @@ public class GeneticAlgorithm {
 	
 	public int[] Mutation(int[] creature, float mutation_rate) {
 		if( GetRandomInteger(100) < mutation_rate*100) {
-			creature[GetRandomInteger(dnaSize) - 1] = GetRandomInteger(4);
+			
+			creature[GetRandomInteger(dnaSize)] = GetRandomInteger(4);
 		}
 		return creature;
 	}
 	
 	public int GetRandomInteger(int maximum)	{	
-            return (rand.Next()%maximum)+1;
+            return (rand.Next()%maximum);
 			//return UnityEngine.Random.Range(1, maximum);
             // or call your class level instance of Random
     }
 	
-	public int calcFitness(int[] gene, bool[,] board, float random_multiplier = 2.5f) {
+	public int calcFitness(int[] gene, bool[,] board, float random_multiplier = 1f) {
 		int fitness = 0;
 		if(lost(gene, dnaSize, myPositionX, myPositionY, board)) {
 			// Debug.Log("fitness= "+ fitness);
@@ -208,7 +209,7 @@ public class GeneticAlgorithm {
 			}
 		}
 		for(int i = 0; i < path_size; i++) {
-			// Debug.Log("path[" + i + "]= " + path[i]);
+			//Debug.Log("path[" + i + "]= " + path[i]);
 			switch(path[i]) {
 				case 1:
 					if((position_x - 1) < 0 || auxBoard[position_x - 1,position_y] == true) {
@@ -219,7 +220,7 @@ public class GeneticAlgorithm {
 						position_x--;
 					}
 					break;
-				case 2:
+				case 0:
 					if((position_y + 1) >= boardSizeY || auxBoard[position_x,position_y + 1] == true) {
 						// Debug.Log("Lostcase2");
 						return true;
@@ -237,7 +238,7 @@ public class GeneticAlgorithm {
 						position_x++;
 					}
 					break;
-				case 4:
+				case 2:
 					if((position_y - 1) < 0 || auxBoard[position_x,position_y - 1] == true) {
 						// Debug.Log("Lostcase4");
 						return true;

@@ -31,7 +31,7 @@ public class Menu : MonoBehaviour {
 	}
 
 	public void StartGame(){
-		trainingManager.StartTraining();
+		// trainingManager.StartTraining();
 	}
 
 	public void StartMultiplayer(){

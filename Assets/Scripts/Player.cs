@@ -19,15 +19,19 @@ public class Player : MonoBehaviour {
 	void Update () {
 		if(Input.GetKeyDown(upKey)){
 			robot.SetNextDirection(Robot.Direction.UP);
+			Grid.instance.UpdateBoard(true, (int)Robot.Direction.UP);
 		}
 		else if(Input.GetKeyDown(downKey)){
 			robot.SetNextDirection(Robot.Direction.DOWN);
+			Grid.instance.UpdateBoard(true, (int)Robot.Direction.DOWN);
 		}
 		else if(Input.GetKeyDown(leftKey)){
 			robot.SetNextDirection(Robot.Direction.LEFT);
+			Grid.instance.UpdateBoard(true, (int)Robot.Direction.LEFT);
 		}
 		else if(Input.GetKeyDown(rightKey)){
 			robot.SetNextDirection(Robot.Direction.RIGHT);
+			Grid.instance.UpdateBoard(true, (int)Robot.Direction.RIGHT);
 		}
 	}
 }

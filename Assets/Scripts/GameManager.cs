@@ -36,6 +36,7 @@ public class GameManager : MonoBehaviour {
 
 	void Update(){
 		if(gameEnded && Input.GetKeyDown(restartKey)){
+			ai.GetComponent<AIController>().gameOver = true;
 			PlayAgain();
 		}
 	}

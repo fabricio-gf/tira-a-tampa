@@ -27,6 +27,9 @@ public class Robot : MonoBehaviour {
 	private Vector3 nextPosition;
 	private GameObject previousWall;
 	private bool isDead = false;
+	[HideInInspector] public bool canMove = false;
+	public bool isPlayer;
+	public AIController ai;
 
 	void Awake(){
 		previousDirection = startingDirection;
@@ -41,13 +44,18 @@ public class Robot : MonoBehaviour {
 		if(isDead){
 			return;
 		}
-		if(Vector3.Distance(transform.position, nextPosition) <= 0.01){
-			MoveStep();
+		if(Vector3.Distance(transform.position, nextPosition) <= 0.005){
+			if(isPlayer || canMove){
+				MoveStep();
+				canMove = false;
+			}
 		}
 		transform.position = Vector3.MoveTowards(transform.position, nextPosition, speed*Time.deltaTime);	
 	}
 
 	private void MoveStep(){
+		// update board
+		
 		//define next direction
 		ChangeDirection(nextDirection);
 		nextPosition = transform.position + moveVector;
@@ -98,11 +106,6 @@ public class Robot : MonoBehaviour {
 		if((int)currentDirection + (int)dir != 2 && (int)currentDirection + (int)dir != 4){
 			nextDirection = dir;	
 		}
-		// else{
-		// 	if((currentDirection == Direction.UP && nextDirection == Direction.UP) || (currentDirection == Direction.LEFT && nextDirection == Direction.LEFT)){
-		// 		nextDirection = dir;
-		// 	}
-		// }
 	}
 
 	void OnTriggerEnter2D(Collider2D col){
