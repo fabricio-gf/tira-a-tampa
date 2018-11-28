@@ -176,24 +176,161 @@ public class GeneticAlgorithm {
 			// Debug.Log("entered lost");
 			fitness += losingPenalty;
 			// Debug.Log("fitness= "+ fitness);
-		}
-		//if(won(dnaSize, positionX, positionY, boardSizeX, boardSizeY)	
-		// fitness += Math.Abs(myPositionX-enemyPositionX);
-		if(myPositionX >= enemyPositionX) {
-			fitness -= (myPositionX - enemyPositionX);
-			} else {
-			fitness += (myPositionX - enemyPositionX);
-		}
-		// Debug.Log("fitness= "+ fitness);
-		if(myPositionY >= enemyPositionY) {
-			fitness -= (myPositionY - enemyPositionY);
 		} else {
-			fitness += (myPositionY - enemyPositionY);
+			fitness += VoronoiDiagrams(gene, board, myPositionX, myPositionY, enemyPositionX, enemyPositionY);
 		}
-		// Debug.Log("fitness= "+ fitness);
-		fitness += GetRandomInteger((int) Math.Floor((boardSizeX + boardSizeY) * random_multiplier));
-		// Debug.Log("fitness= "+ fitness);
+		// //if(won(dnaSize, positionX, positionY, boardSizeX, boardSizeY)	
+		// // fitness += Math.Abs(myPositionX-enemyPositionX);
+		// if(myPositionX >= enemyPositionX) {
+		// 	fitness -= (myPositionX - enemyPositionX);
+		// 	} else {
+		// 	fitness += (myPositionX - enemyPositionX);
+		// }
+		// // Debug.Log("fitness= "+ fitness);
+		// if(myPositionY >= enemyPositionY) {
+		// 	fitness -= (myPositionY - enemyPositionY);
+		// } else {
+		// 	fitness += (myPositionY - enemyPositionY);
+		// }
+		// // Debug.Log("fitness= "+ fitness);
+		// fitness += GetRandomInteger((int) Math.Floor((boardSizeX + boardSizeY) * random_multiplier));
+		// // Debug.Log("fitness= "+ fitness);
+
 		return fitness;
+	}
+
+	public int VoronoiDiagrams(int[] gene, bool [,] board, int posX, int posY, int enemyPositionX, int enemyPositionY) {
+		int myDomination = 0;
+		int enemyDomination = 0;
+		Queue<int[]> myQ = new Queue<int[]>();
+		Queue<int[]> enemyQ = new Queue<int[]>();
+		int position_x = posX;
+		int position_y = posY;
+		int ene_position_x = enemyPositionX;
+		int ene_position_y = enemyPositionY;
+		int[] pos_aux = new int[2];
+
+		bool[,] auxBoard = new bool[boardSizeX, boardSizeY];
+		for(int i = 0; i < boardSizeX; i++){
+			for(int j = 0; j < boardSizeY; j++){
+				auxBoard[i,j] = board[i,j];
+			}
+		}
+		for(int i = 0; i < dnaSize; i++){
+			switch(gene[i]) {
+				case 2:
+					if((position_x - 1) < 0 || auxBoard[position_x - 1,position_y] == true) {
+					}else {
+						auxBoard[position_x,position_y] = true;
+						position_x--;
+					}
+					break;
+				case 3:
+					if((position_y + 1) >= boardSizeY || auxBoard[position_x,position_y + 1] == true) {
+					} else {
+						auxBoard[position_x,position_y] = true;
+						position_y++;
+					}
+					break;
+				case 0:
+					if((position_x + 1) >= boardSizeX || auxBoard[position_x + 1,position_y] == true) {
+					} else {
+						auxBoard[position_x,position_y] = true;
+						position_x++;
+					}
+					break;
+				case 1:
+					if((position_y - 1) < 0 || auxBoard[position_x,position_y - 1] == true) {
+					} else {
+						auxBoard[position_x,position_y] = true;
+						position_y--;
+					}
+					break;
+				default:
+					Console.WriteLine("Error: impossible path");
+					break;
+			}
+		}
+		List<int[]> updateBoard = new List<int[]>();
+		pos_aux[0] = position_x;
+		pos_aux[1] = position_y;
+		myQ.Enqueue(pos_aux);
+		auxBoard[position_x, position_y] = true;
+		pos_aux[0] = ene_position_x;
+		pos_aux[1] = ene_position_y;
+		enemyQ.Enqueue(pos_aux);
+		auxBoard[ene_position_x, ene_position_y] = true;
+		while(myQ.Count != 0 && enemyQ.Count != 0) {
+			int aux = myQ.Count;
+			int[] tmp = new int[2];
+			for(int i = 0; i < aux; i++) {
+				tmp = myQ.Dequeue();
+				if(!enemyQ.Contains(tmp)) {
+					myDomination++;
+				} else {
+					enemyDomination--;
+				}
+				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false) {
+					pos_aux[0] = tmp[0] + 1;
+					pos_aux[1] = tmp[1];
+					updateBoard.Add(pos_aux);
+					myQ.Enqueue(pos_aux);
+				}
+				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false) {
+					pos_aux[0] = tmp[0] - 1;
+					pos_aux[1] = tmp[1];
+					updateBoard.Add(pos_aux);
+					myQ.Enqueue(pos_aux);
+				}
+				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false) {
+					pos_aux[0] = tmp[0];
+					pos_aux[1] = tmp[1] + 1;
+					updateBoard.Add(pos_aux);
+					myQ.Enqueue(pos_aux);
+				}
+				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false) {
+					pos_aux[0] = tmp[0];
+					pos_aux[1] = tmp[1] - 1;
+					updateBoard.Add(pos_aux);
+					myQ.Enqueue(pos_aux);
+				}
+			}
+			aux = enemyQ.Count;
+			for(int i = 0; i < aux; i++) {
+				tmp = enemyQ.Dequeue();
+				enemyDomination++;
+				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false) {
+					pos_aux[0] = tmp[0] + 1;
+					pos_aux[1] = tmp[1];
+					updateBoard.Add(pos_aux);
+					enemyQ.Enqueue(pos_aux);
+				}
+				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false) {
+					pos_aux[0] = tmp[0] - 1;
+					pos_aux[1] = tmp[1];
+					updateBoard.Add(pos_aux);
+					enemyQ.Enqueue(pos_aux);
+				}
+				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false) {
+					pos_aux[0] = tmp[0];
+					pos_aux[1] = tmp[1] + 1;
+					updateBoard.Add(pos_aux);
+					enemyQ.Enqueue(pos_aux);
+				}
+				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false) {
+					pos_aux[0] = tmp[0];
+					pos_aux[1] = tmp[1] - 1;
+					updateBoard.Add(pos_aux);
+					enemyQ.Enqueue(pos_aux);
+				}
+			}
+			aux = updateBoard.Count;
+			for(int i = 0; i < aux; i++) {
+				auxBoard[updateBoard[i][0], updateBoard[i][1]] = true;
+			}
+			updateBoard.Clear();
+		}
+		return (myDomination - enemyDomination);
 	}
 
 	/*public bool won(int path, int path_size, int position_x, int position_y) {
