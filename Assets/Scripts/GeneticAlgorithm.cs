@@ -200,10 +200,10 @@ public class GeneticAlgorithm {
 	}
 
 	public int VoronoiDiagrams(int[] gene, bool [,] board, int posX, int posY, int enemyPositionX, int enemyPositionY) {
-		int myDomination = 0;
-		int enemyDomination = 0;
-		Queue<int[]> myQ = new Queue<int[]>();
-		Queue<int[]> enemyQ = new Queue<int[]>();
+		int myDomination = 1;
+		int enemyDomination = 1;
+		List<int[]> myQ = new List<int[]>();
+		List<int[]> enemyQ = new List<int[]>();
 		int position_x = posX;
 		int position_y = posY;
 		int ene_position_x = enemyPositionX;
@@ -216,6 +216,8 @@ public class GeneticAlgorithm {
 				auxBoard[i,j] = board[i,j];
 			}
 		}
+		auxBoard[posX, posY] = true;
+		auxBoard[enemyPositionX, enemyPositionY] = true;
 		for(int i = 0; i < dnaSize; i++){
 			switch(gene[i]) {
 				case 2:
@@ -251,86 +253,192 @@ public class GeneticAlgorithm {
 					break;
 			}
 		}
-		List<int[]> updateBoard = new List<int[]>();
+		// auxBoard[position_x,position_y] = true;
+		// string auxs = "";
+		// for(int i = 0; i < boardSizeX; i++){
+		// 	for(int j = 0; j < boardSizeY; j++){
+		// 		if(auxBoard[i,j]) {
+		// 			auxs += "1";
+		// 		} else {
+		// 			auxs += "0";
+		// 		}
+		// 	}
+		// 	Console.WriteLine(auxs);
+		// 	auxs = "";
+		// }
+		// Console.WriteLine("___________________________________");
+		List<int[]> updateBoard1 = new List<int[]>();
+		List<int[]> updateBoard2 = new List<int[]>();
+		//updateBoard.Clear();
 		pos_aux[0] = position_x;
 		pos_aux[1] = position_y;
-		myQ.Enqueue(pos_aux);
+		// Console.WriteLine(pos_aux[0] + " " + pos_aux[1]);
+		myQ.Add(pos_aux);
+		pos_aux = new int[2];
+
+								// Console.WriteLine("___________________________________");
 		auxBoard[position_x, position_y] = true;
 		pos_aux[0] = ene_position_x;
 		pos_aux[1] = ene_position_y;
-		enemyQ.Enqueue(pos_aux);
+		enemyQ.Add(pos_aux);
 		auxBoard[ene_position_x, ene_position_y] = true;
-		while(myQ.Count != 0 && enemyQ.Count != 0) {
-			int aux = myQ.Count;
-			int[] tmp = new int[2];
-			for(int i = 0; i < aux; i++) {
-				tmp = myQ.Dequeue();
-				if(!enemyQ.Contains(tmp)) {
-					myDomination++;
-				} else {
-					enemyDomination--;
-				}
-				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false) {
+
+		int myStart = 0;
+		int enemyStart = 0;
+		int aux = myQ.Count;
+		string auxs = "";
+		int[] tmp = new int[2];
+
+		while(myQ.Count > myStart || enemyQ.Count > enemyStart) {
+			aux = myQ.Count;
+			for(int i = myStart; i < aux; i++) {
+				tmp = new int[2];
+				tmp = myQ[i];
+				// Console.WriteLine("valor na queue: " + myQ[i][0] + " " + myQ[i][1]);
+				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false && notInserted(tmp[0] + 1, tmp[1], updateBoard1)) {
+					 // Console.WriteLine("Entrou caso 1");
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0] + 1;
 					pos_aux[1] = tmp[1];
-					updateBoard.Add(pos_aux);
-					myQ.Enqueue(pos_aux);
+					updateBoard1.Add(pos_aux);
+					myQ.Add(pos_aux);
+					myDomination++;
 				}
-				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false) {
+				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false && notInserted(tmp[0] - 1, tmp[1], updateBoard1)) {
+					 // Console.WriteLine("Entrou caso 2");
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0] - 1;
 					pos_aux[1] = tmp[1];
-					updateBoard.Add(pos_aux);
-					myQ.Enqueue(pos_aux);
+					updateBoard1.Add(pos_aux);
+					myQ.Add(pos_aux);
+					myDomination++;
 				}
-				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false) {
+				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false && notInserted(tmp[0] , tmp[1] + 1, updateBoard1)) {
+					 // Console.WriteLine("Entrou caso 3");
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0];
 					pos_aux[1] = tmp[1] + 1;
-					updateBoard.Add(pos_aux);
-					myQ.Enqueue(pos_aux);
+					updateBoard1.Add(pos_aux);
+					myQ.Add(pos_aux);
+					myDomination++;
 				}
-				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false) {
+				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false && notInserted(tmp[0] , tmp[1] - 1, updateBoard1)) {
+					// Console.WriteLine("Entrou caso 4");
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0];
 					pos_aux[1] = tmp[1] - 1;
-					updateBoard.Add(pos_aux);
-					myQ.Enqueue(pos_aux);
+					updateBoard1.Add(pos_aux);
+					myQ.Add(pos_aux);
+					myDomination++;
 				}
+				myStart++;
 			}
 			aux = enemyQ.Count;
-			for(int i = 0; i < aux; i++) {
-				tmp = enemyQ.Dequeue();
-				enemyDomination++;
-				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false) {
+			for(int i = enemyStart; i < aux; i++) {
+				tmp = new int[2];
+				tmp = enemyQ[i];
+				if(tmp[0] + 1 < boardSizeX && auxBoard[tmp[0] + 1, tmp[1]] == false && notInserted(tmp[0] + 1, tmp[1], updateBoard2)) {
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0] + 1;
 					pos_aux[1] = tmp[1];
-					updateBoard.Add(pos_aux);
-					enemyQ.Enqueue(pos_aux);
+					updateBoard2.Add(pos_aux);
+					enemyQ.Add(pos_aux);
+					enemyDomination++;
 				}
-				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false) {
+				if(tmp[0] - 1 >= 0 && auxBoard[tmp[0] - 1, tmp[1]] == false && notInserted(tmp[0] - 1, tmp[1], updateBoard2)) {
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0] - 1;
 					pos_aux[1] = tmp[1];
-					updateBoard.Add(pos_aux);
-					enemyQ.Enqueue(pos_aux);
+					updateBoard2.Add(pos_aux);
+					enemyQ.Add(pos_aux);
+					enemyDomination++;
 				}
-				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false) {
+				if(tmp[1] + 1 < boardSizeY && auxBoard[tmp[0], tmp[1] + 1] == false && notInserted(tmp[0] , tmp[1] + 1, updateBoard2)) {
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0];
 					pos_aux[1] = tmp[1] + 1;
-					updateBoard.Add(pos_aux);
-					enemyQ.Enqueue(pos_aux);
+					updateBoard2.Add(pos_aux);
+					enemyQ.Add(pos_aux);
+					enemyDomination++;
 				}
-				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false) {
+				if(tmp[1] - 1 >= 0 && auxBoard[tmp[0], tmp[1] - 1] == false && notInserted(tmp[0] , tmp[1] - 1, updateBoard2)) {
+					pos_aux = new int[2];
 					pos_aux[0] = tmp[0];
 					pos_aux[1] = tmp[1] - 1;
-					updateBoard.Add(pos_aux);
-					enemyQ.Enqueue(pos_aux);
+					updateBoard2.Add(pos_aux);
+					enemyQ.Add(pos_aux);
+					enemyDomination++;
+				}
+				enemyStart++;
+			}
+			int aux1 = updateBoard1.Count;
+			int aux2 = updateBoard2.Count;
+			for(int i = 0; i < aux1; i++) {
+				for(int j = 0; j < aux2; j++) {
+					if(updateBoard1[i][0] == updateBoard2[j][0] && updateBoard1[i][1] == updateBoard2[j][1]) {
+						enemyDomination--;
+						myDomination--;
+					}
 				}
 			}
-			aux = updateBoard.Count;
-			for(int i = 0; i < aux; i++) {
-				auxBoard[updateBoard[i][0], updateBoard[i][1]] = true;
+			for(int i = 0; i < aux1; i++) {
+				auxBoard[updateBoard1[i][0], updateBoard1[i][1]] = true;
 			}
-			updateBoard.Clear();
+			updateBoard1.Clear();
+			for(int i = 0; i < aux2; i++) {
+				auxBoard[updateBoard2[i][0], updateBoard2[i][1]] = true;
+			}
+			updateBoard2.Clear();
+			// Console.WriteLine(myDomination);
+			// Console.WriteLine(enemyDomination);
+			
+			// for(int i = 0; i < boardSizeX; i++){
+			// 	for(int j = 0; j < boardSizeY; j++){
+			// 		if(auxBoard[i,j]) {
+			// 			auxs += "1";
+			// 		} else {
+			// 			auxs += "0";
+			// 		}
+			// 	}
+			// 	Console.WriteLine(auxs);
+			// 	auxs = "";
+			// }
+			// aux = myQ.Count;
+			// for(int i = myStart; i < aux; i++) {
+			// 	Console.WriteLine("valor na myqueue: " + myQ[i][0] + " " + myQ[i][1]);
+			// }
+			// aux = enemyQ.Count;
+			// for(int i = enemyStart; i < aux; i++) {
+			// 	Console.WriteLine("valor na enemyqueue: " + enemyQ[i][0] + " " + enemyQ[i][1]);
+			// }
 		}
-		return (myDomination - enemyDomination);
+
+			// for(int i = 0; i < boardSizeX; i++){
+			// 	for(int j = 0; j < boardSizeY; j++){
+			// 		if(auxBoard[i,j]) {
+			// 			auxs += "1";
+			// 		} else {
+			// 			auxs += "0";
+			// 		}
+			// 	}
+			// 	Console.WriteLine(auxs);
+			// 	auxs = "";
+			// }
+		return(myDomination - enemyDomination);
+	}
+
+	public static bool notInserted(int positionX, int positionY, List<int[]> updateBoard) {
+		int aux = updateBoard.Count;
+		for(int i = 0; i < aux; i++) {
+			// Console.WriteLine("updateBoard: " + updateBoard[i][0] + " " + updateBoard[i][1]);
+			// Console.WriteLine("position: " + positionX + " " + positionY);
+			if(updateBoard[i][0] == positionX && updateBoard[i][1] == positionY) {
+					// Console.WriteLine("___________________________________");
+				return false;
+			}
+		}
+		// Console.WriteLine("___________________________________");
+		return true;
 	}
 
 	/*public bool won(int path, int path_size, int position_x, int position_y) {
