@@ -210,6 +210,7 @@ public class GeneticAlgorithm {
 		int ene_position_y = enemyPositionY;
 		int[] pos_aux = new int[2];
 
+		
 		bool[,] auxBoard = new bool[boardSizeX, boardSizeY];
 		for(int i = 0; i < boardSizeX; i++){
 			for(int j = 0; j < boardSizeY; j++){
@@ -251,6 +252,7 @@ public class GeneticAlgorithm {
 					break;
 			}
 		}
+		
 		List<int[]> updateBoard = new List<int[]>();
 		pos_aux[0] = position_x;
 		pos_aux[1] = position_y;
