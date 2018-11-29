@@ -23,6 +23,7 @@ public class Menu : MonoBehaviour {
 
 
 	void Start(){
+		config.Voronoi = false;
 		ChangeSpeed(baseSpeedValue);
 		ChangePopulation(basePopValue);
 		ChangeGenerations(baseGenValue);
@@ -35,8 +36,17 @@ public class Menu : MonoBehaviour {
 		SceneManager.LoadScene("Game");
 	}
 
+	public void StartVoronoi(){
+		config.Voronoi = true;
+		SceneManager.LoadScene("Game");
+	}
+
 	public void StartMultiplayer(){
 		SceneManager.LoadScene("Multiplayer");
+	}
+
+	public void StartAIOnly(){
+		SceneManager.LoadScene("AIOnly");
 	}
 
 	public void ChangeSpeed(float sp){

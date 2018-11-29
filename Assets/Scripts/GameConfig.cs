@@ -10,4 +10,5 @@ public class GameConfig : ScriptableObject {
 	[Range(50,500)] public int generations;
 	[Range(1,10)] public int genes;
 	[Range(0,1)] public float mutation;
+	public bool Voronoi;
 }

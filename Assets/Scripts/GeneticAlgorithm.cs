@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class GeneticAlgorithm {
 
-	
 	public List<int[]> population;
 	
 	private int popSize;
@@ -22,9 +21,11 @@ public class GeneticAlgorithm {
 	private float mutationRate;
 	private System.Random rand;
 
+	private bool Voronoi = false;
+
 
 	public GeneticAlgorithm(int pop_size, int dna_size, int num_gen, bool[,] board, int my_position_x, int my_position_y, int enemy_position_x, int enemy_position_y, 
-		int board_size_x, int board_size_y, int winning_reward, int losing_penalty, int seed, float mutation_rate = 0.01f) {
+		int board_size_x, int board_size_y, int winning_reward, int losing_penalty, int seed, bool voronoi, float mutation_rate = 0.01f) {
 		
 		Board = board;
 		popSize = pop_size;
@@ -41,6 +42,7 @@ public class GeneticAlgorithm {
 		mutationRate = mutation_rate;
 		population = new List<int[]>();
 		rand = new System.Random(seed);
+		Voronoi = voronoi;
 		
 		int[] aux;
 		// Debug.Log("Criando população:");
@@ -177,7 +179,11 @@ public class GeneticAlgorithm {
 			fitness += losingPenalty;
 			// Debug.Log("fitness= "+ fitness);
 		} else {
-			fitness += VoronoiDiagrams(gene, board, myPositionX, myPositionY, enemyPositionX, enemyPositionY);
+			if(voronoi)
+				fitness += VoronoiDiagrams(gene, board, myPositionX, myPositionY, enemyPositionX, enemyPositionY);
+			else{
+				
+			}
 		}
 		// //if(won(dnaSize, positionX, positionY, boardSizeX, boardSizeY)	
 		// // fitness += Math.Abs(myPositionX-enemyPositionX);
