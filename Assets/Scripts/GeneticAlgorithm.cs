@@ -210,6 +210,7 @@ public class GeneticAlgorithm {
 		int ene_position_y = enemyPositionY;
 		int[] pos_aux = new int[2];
 
+		
 		bool[,] auxBoard = new bool[boardSizeX, boardSizeY];
 		for(int i = 0; i < boardSizeX; i++){
 			for(int j = 0; j < boardSizeY; j++){
@@ -253,6 +254,7 @@ public class GeneticAlgorithm {
 					break;
 			}
 		}
+
 		// auxBoard[position_x,position_y] = true;
 		// string auxs = "";
 		// for(int i = 0; i < boardSizeX; i++){
