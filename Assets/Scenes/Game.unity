@@ -519,7 +519,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4516800818986084, guid: 551477254ef00d842945eea223d47dee, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 4.5
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 4516800818986084, guid: 551477254ef00d842945eea223d47dee, type: 2}
       propertyPath: m_LocalPosition.z
@@ -4784,7 +4784,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 882811195}
   m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: 8.5, y: 4.5, z: 0}
+  m_LocalPosition: {x: 8.5, y: -1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 662377961}
@@ -4976,8 +4976,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   boardSizeX: 30
   boardSizeY: 14
-  playerPosition: {x: 6, y: 1}
-  AIPosition: {x: 23, y: 1}
+  positions:
+  - {x: 6, y: 7}
+  - {x: 22, y: 7}
 --- !u!1 &1564719246
 GameObject:
   m_ObjectHideFlags: 0

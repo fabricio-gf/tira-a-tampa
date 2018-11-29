@@ -45,7 +45,7 @@ public class GameManager : MonoBehaviour {
 	}
 
 	public void EndGame(int deadPlayer){
-		ai.GetComponent<AIController>().gameOver = true;
+		if(ai.GetComponent<AIController>() != null)ai.GetComponent<AIController>().gameOver = true;
 		endWindow.SetActive(true);
 		deadPlayers++;
 		if(deadPlayers > 1){
@@ -64,7 +64,7 @@ public class GameManager : MonoBehaviour {
 			break;
 			case 2:
 				if(SceneManager.GetActiveScene().name == "Game"){
-					endText.text = "PARABÉNS FERA!";
+					endText.text = "PARABENS FERA!";
 				}
 				else{
 					endText.text = "Player 1 won!";

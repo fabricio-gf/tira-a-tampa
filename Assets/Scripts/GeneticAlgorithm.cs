@@ -179,10 +179,10 @@ public class GeneticAlgorithm {
 			fitness += losingPenalty;
 			// Debug.Log("fitness= "+ fitness);
 		} else {
-			if(voronoi)
+			if(Voronoi)
 				fitness += VoronoiDiagrams(gene, board, myPositionX, myPositionY, enemyPositionX, enemyPositionY);
 			else{
-				
+				fitness += normalFitness(gene, board);
 			}
 		}
 		// //if(won(dnaSize, positionX, positionY, boardSizeX, boardSizeY)	
@@ -202,6 +202,24 @@ public class GeneticAlgorithm {
 		// fitness += GetRandomInteger((int) Math.Floor((boardSizeX + boardSizeY) * random_multiplier));
 		// // Debug.Log("fitness= "+ fitness);
 
+		return fitness;
+	}
+
+	public int normalFitness(int[] gene, bool[,] board, float random_multiplier = 1f) {
+		int fitness = 0;
+		if(myPositionX >= enemyPositionX) {
+			fitness -= (myPositionX - enemyPositionX);
+			} else {
+			fitness += (myPositionX - enemyPositionX);
+		}
+		// Debug.Log("fitness= "+ fitness);
+		if(myPositionY >= enemyPositionY) {
+			fitness -= (myPositionY - enemyPositionY);
+		} else {
+			fitness += (myPositionY - enemyPositionY);
+		}
+		// Debug.Log("fitness= "+ fitness);
+		fitness += GetRandomInteger((int) Math.Floor((boardSizeX + boardSizeY) * random_multiplier));
 		return fitness;
 	}
 
@@ -465,7 +483,9 @@ public class GeneticAlgorithm {
 			//Debug.Log("path[" + i + "]= " + path[i]);
 			switch(path[i]) {
 				case 2:
-					if((position_x - 1) < 0 || auxBoard[position_x - 1,position_y] == true) {
+					// Debug.Log("CASE 2: position X -> " + (position_x-1) + " || position Y -> " + position_y);
+					// Debug.Break();
+					if((position_x - 1) < 0 || position_y < 0 || position_y >= boardSizeY || auxBoard[position_x - 1,position_y] == true) {
 						//Debug.Log("Lostcase1");
 						return true;
 					}else {
@@ -474,7 +494,9 @@ public class GeneticAlgorithm {
 					}
 					break;
 				case 3:
-					if((position_y + 1) >= boardSizeY || auxBoard[position_x,position_y + 1] == true) {
+					// Debug.Log("CASE 3: position X -> " + position_x + " || position Y -> " + (position_y+1));
+					// Debug.Break();
+					if((position_y + 1) >= boardSizeY || position_x < 0 || position_x >= boardSizeX || auxBoard[position_x,position_y + 1] == true) {
 						// Debug.Log("Lostcase2");
 						return true;
 					} else {
@@ -483,7 +505,9 @@ public class GeneticAlgorithm {
 					}
 					break;
 				case 0:
-					if((position_x + 1) >= boardSizeX || auxBoard[position_x + 1,position_y] == true) {
+					// Debug.Log("CASE 0: position X -> " + (position_x+1) + " || position Y -> " + position_y);
+					// Debug.Break();
+					if((position_x + 1) >= boardSizeX || position_y < 0 || position_y >= boardSizeY || auxBoard[position_x + 1,position_y] == true) {
 						// Debug.Log("Lostcase3");
 						return true;
 					} else {
@@ -492,7 +516,9 @@ public class GeneticAlgorithm {
 					}
 					break;
 				case 1:
-					if((position_y - 1) < 0 || auxBoard[position_x,position_y - 1] == true) {
+					// Debug.Log("CASE 0: position X -> " + position_x + " || position Y -> " + (position_y-1));
+					// Debug.Break();
+					if((position_y - 1) < 0 || position_x < 0 || position_x >= boardSizeX || auxBoard[position_x,position_y - 1] == true) {
 						// Debug.Log("Lostcase4");
 						return true;
 					} else {

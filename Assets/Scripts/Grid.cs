@@ -9,8 +9,10 @@ public class Grid : MonoBehaviour {
 	public int boardSizeX;
 	public int boardSizeY;
 
-	public Vector2Int playerPosition;
-	public Vector2Int AIPosition;
+	public Vector2Int[] positions;
+
+	// public Vector2Int playerPosition;
+	// public Vector2Int AIPosition;
 
 	public bool[,] board;
 
@@ -34,52 +36,53 @@ public class Grid : MonoBehaviour {
 			}
 		}
 		for(int i = 0; i < boardSizeX; i++)
-		board[playerPosition.x, playerPosition.y] = true;
-		board[AIPosition.x, AIPosition.y] = true;
+		board[positions[0].x, positions[0].y] = true;
+		board[positions[1].x, positions[1].y] = true;
 	}
 
 	public void UpdateBoard(bool isPlayer, int direction){
-
+		// print("is player " + isPlayer + " direction " + direction);
+		// Debug.Break();
 		if(!isPlayer){
 			switch(direction){
-			case 0:
-				AIPosition += new Vector2Int(1, 0);
-			break;
-			case 1:
-				AIPosition += new Vector2Int(0, -1);
-			break;
-			case 2:
-				AIPosition += new Vector2Int(-1, 0);
-			break;
-			case 3:
-				AIPosition += new Vector2Int(0, 1);
-			break;
-			default:
-			break;
-		}
-		if((AIPosition.x < boardSizeX && AIPosition.x > -1) && (AIPosition.y < boardSizeY && AIPosition.y > -1)){
-			board[AIPosition.x, AIPosition.y] = true;
-		}
-	}
-		else{
-			switch(direction){
 				case 0:
-					playerPosition += new Vector2Int(1, 0);
+					positions[1] += new Vector2Int(1, 0);
 				break;
 				case 1:
-					playerPosition += new Vector2Int(0, -1);
+					positions[1] += new Vector2Int(0, -1);
 				break;
 				case 2:
-					playerPosition += new Vector2Int(-1, 0);
+					positions[1] += new Vector2Int(-1, 0);
 				break;
 				case 3:
-					playerPosition += new Vector2Int(0, 1);
+					positions[1] += new Vector2Int(0, 1);
 				break;
 				default:
 				break;
 			}
-			if((playerPosition.x < boardSizeX && playerPosition.x > -1) && (playerPosition.y < boardSizeY && playerPosition.y > -1)){
-				board[playerPosition.x, playerPosition.y] = true;
+			if((positions[1].x < boardSizeX && positions[1].x > -1) && (positions[1].y < boardSizeY && positions[1].y > -1)){
+				board[positions[1].x, positions[1].y] = true;
+			}
+		}
+		else{
+			switch(direction){
+				case 0:
+					positions[0] += new Vector2Int(1, 0);
+				break;
+				case 1:
+					positions[0] += new Vector2Int(0, -1);
+				break;
+				case 2:
+					positions[0] += new Vector2Int(-1, 0);
+				break;
+				case 3:
+					positions[0] += new Vector2Int(0, 1);
+				break;
+				default:
+				break;
+			}
+			if((positions[0].x < boardSizeX && positions[0].x > -1) && (positions[0].y < boardSizeY && positions[0].y > -1)){
+				board[positions[0].x, positions[0].y] = true;
 			}
 		}
 	}

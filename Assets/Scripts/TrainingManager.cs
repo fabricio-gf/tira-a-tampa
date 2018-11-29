@@ -52,23 +52,15 @@ public class TrainingManager : MonoBehaviour {
 		
 
 		seed1 = Random.Range(0,100);
-		genAlg1 = new GeneticAlgorithm(popSize, dnaSize, numGen, board, firstPositionX, firstPositionY, secondPositionX, secondPositionY, boardSizeX, boardSizeY, winningReward, losingPenalty, seed1, mutationRate, config.Voronoi);
+		genAlg1 = new GeneticAlgorithm(popSize, dnaSize, numGen, board, firstPositionX, firstPositionY, secondPositionX, secondPositionY, boardSizeX, boardSizeY, winningReward, losingPenalty, seed1, config.Voronoi, mutationRate);
 		// do{seed2 = Random.Range(0,100);}while(seed2 == seed1);
 		// genAlg2 = new GeneticAlgorithm(popSize, dnaSize, numGen, board, secondPositionX, secondPositionY, firstPositionX, firstPositionY, boardSizeX, boardSizeY, winningReward, losingPenalty, seed2, mutationRate);	
 		
 		List<int[]> pop1 = genAlg1.RunAlgorithm();
-		string str = "";
-		for(int i = 0; i < pop1.Count; i++){
-			str += pop1[0][i].ToString() + " ";
-		}
-		print(str);
-	
 		// List<int[]> pop2 = genAlg2.RunAlgorithm();
 
-		
-
 		stopwatch.Stop();
-		print("Elapsed time: " + stopwatch.ElapsedMilliseconds);
+		// print("Elapsed time: " + stopwatch.ElapsedMilliseconds);
 
 		return pop1.GetRange(0,2);
 		//agir 5 jogadas
@@ -86,7 +78,7 @@ public class TrainingManager : MonoBehaviour {
 		secondPositionY = currentSecondPositionY;
 
 
-		genAlg1 = new GeneticAlgorithm(popSize, dnaSize, numGen, board, firstPositionX, firstPositionY, secondPositionX, secondPositionY, boardSizeX, boardSizeY, winningReward, losingPenalty, seed1, mutationRate, config.Voronoi);		
+		genAlg1 = new GeneticAlgorithm(popSize, dnaSize, numGen, board, firstPositionX, firstPositionY, secondPositionX, secondPositionY, boardSizeX, boardSizeY, winningReward, losingPenalty, seed1, config.Voronoi, mutationRate);		
 		List<int[]> pop1 = genAlg1.RunAlgorithm();
 
 		return pop1.GetRange(0,2);
