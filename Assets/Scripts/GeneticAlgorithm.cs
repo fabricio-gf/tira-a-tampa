@@ -179,9 +179,12 @@ public class GeneticAlgorithm {
 			fitness += losingPenalty;
 			// Debug.Log("fitness= "+ fitness);
 		} else {
-			if(Voronoi)
+			if(Voronoi) {
+				if(Math.Abs(myPositionX - enemyPositionX) + Math.Abs(myPositionY - enemyPositionY) - dnaSize <= 2) {
+					fitness += (losingPenalty / 2);
+				}
 				fitness += VoronoiDiagrams(gene, board, myPositionX, myPositionY, enemyPositionX, enemyPositionY);
-			else{
+			}else{
 				fitness += normalFitness(gene, board);
 			}
 		}
